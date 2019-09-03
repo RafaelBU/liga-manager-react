@@ -1,25 +1,22 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import GoogleLogin from 'react-google-login';
+
 
 function App() {
+
+  const responseGoogle = (response) => {
+    console.log(response)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GoogleLogin
+    clientId="784406214165-b9kjjdc4j062angd690qektitsoej31p.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
+    buttonText="LOGIN WITH GOOGLE"
+    onSuccess={responseGoogle}
+    onFailure={responseGoogle}/>
+
   );
 }
 
