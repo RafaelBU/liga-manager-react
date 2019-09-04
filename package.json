@@ -9,9 +9,9 @@
     "react-avatar": "^3.6.0",
     "react-dom": "^16.9.0",
     "react-google-login": "^5.0.5",
-    "react-scripts": "3.1.1",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.1",
     "redux": "^3.7.2",
     "redux-observable": "^0.16.0",
     "rxjs": "^5.4.3"

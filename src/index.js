@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./presentation/App";
-import {BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 //import {connect, Provider} from "react-redux";
-import {store} from "./presentation/my-redux/my-redux";
-import {Provider} from "react-redux";
+import { store } from "./presentation/my-redux/my-redux";
+import { Provider } from "react-redux";
 import * as serviceWorker from "./presentation/serviceWorker";
 
 ReactDOM.render(
