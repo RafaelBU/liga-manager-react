@@ -6,7 +6,7 @@ import Home from "./components/home/home";
 import Players from "./components/players/players";
 import MyTeam from "./components/myTeam/myTeam";
 import NotFound from "./components/404/404";
-import { Route, Switch } from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 function App() {
@@ -14,8 +14,6 @@ function App() {
         <div>
             <Switch>
                 <Route exact path="/" component={Login} />
-                {/* <Route path="/users" component={DataTable} />
-                    <Route path="/form" component={DataForm} /> */}
                 <ProtectedRoute path="/home" component={Home} />
                 <ProtectedRoute path="/players" component={Players} />
                 <ProtectedRoute path="/myTeam" component={MyTeam} />
