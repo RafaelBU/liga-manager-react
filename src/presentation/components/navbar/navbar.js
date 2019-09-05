@@ -1,6 +1,6 @@
 import React from "react";
 import Avatar from "react-avatar";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
@@ -21,18 +21,13 @@ function Navbar() {
             <NavLink to="/home">
                 <Avatar src={avatar} size={50} round={true} />
             </NavLink>
-            <span style={{marginLeft: 10, color: "white", alignSelf: "center"}}>
+            <span style={{ marginLeft: 10, color: "white", alignSelf: "center" }}>
                 {name}
             </span>
-            <div style={{marginLeft: "auto", alignSelf: "center"}}>
-                <SettingsIcon
-                    style={{cursor: "pointer", marginRight: 10}}
-                    color="action"
-                    onClick={() => alert("setttings")}
-                />
+            <div style={{ marginLeft: "auto", alignSelf: "center" }}>
                 <PowerSettingsNewIcon
-                    style={{cursor: "pointer"}}
-                    color="action"
+                    style={{ cursor: "pointer" }}
+                    color="secondary"
                     onClick={() => alert("logout")}
                 />
             </div>

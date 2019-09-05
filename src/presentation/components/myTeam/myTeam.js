@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../navbar/navbar";
 import Avatar from "react-avatar";
 import Typography from "@material-ui/core/Typography";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,9 +10,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actions} from "../../my-redux/my-redux";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actions } from "../../my-redux/my-redux";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(theme => ({
     title: {
-        margin: 50
+        margin: 20
     },
     avatar: {
         textAlign: "center"
@@ -44,7 +45,7 @@ function MyTeam(props) {
     ]);
 
     const [indexPlayer, setIndexPlayer] = useState(-1);
-    const {getDataDispatch, loadDataUser} = props;
+    const { getDataDispatch, loadDataUser } = props;
     const [page, setPage] = useState(1);
     //const [refContainer, setRefContainer] = useState(null);
 
@@ -77,9 +78,9 @@ function MyTeam(props) {
     console.log("team es ", team);
 
     return (
-        <div>
+        <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            <div>
+            <div >
                 <Dialog
                     open={open}
                     TransitionComponent={Transition}
@@ -122,23 +123,23 @@ function MyTeam(props) {
                 </Dialog>
             </div>
             <Typography
-                variant="h3"
-                component="h3"
+                variant="h4"
+                component="h4"
                 align="center"
-                classes={{root: classes.title}}
+                classes={{ root: classes.title }}
             >
-                Alineación
+                Alineación <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
             </Typography>
             <div
                 className="container-fluid"
                 style={{
-                    height: "80vh",
+                    height: "90vh",
                     background:
                         "url(https://datos.elconfidencial.com/datos-28062018-alineacion-mundial-22/src/img/Soccer-Field_nuevo-01.png) no-repeat",
                     backgroundSize: "100% 100%"
                 }}
             >
-                <div className="row justify-content-center mb-5">
+                <div className="row justify-content-center mb-4 mb-md-5">
                     <div className="col-12 text-center">
                         <Avatar
                             alt="player-avatar"
@@ -153,8 +154,8 @@ function MyTeam(props) {
                         />
                     </div>
                 </div>
-                <div className="row justify-content-center mb-5">
-                    <div className="col-3 text-center">
+                <div className="row justify-content-center mb-4 mb-md-5">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -167,7 +168,7 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(1)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -180,7 +181,7 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(2)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -193,11 +194,13 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(3)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                </div>
+                <div className="row justify-content-center mb-4 mb-md-5">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
-                                team[4] !== null
+                                team[4] != null
                                     ? team[4]
                                     : localStorage.getItem("avatar")
                             }
@@ -206,9 +209,7 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(4)}
                         />
                     </div>
-                </div>
-                <div className="row justify-content-center mb-5">
-                    <div className="col-3 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -221,11 +222,11 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(5)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
-                                team[6] != null
+                                team[6] !== null
                                     ? team[6]
                                     : localStorage.getItem("avatar")
                             }
@@ -234,11 +235,13 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(6)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                </div>
+                <div className="row justify-content-center mb-4 mb-md-5">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
-                                team[7] != null
+                                team[7] !== null
                                     ? team[7]
                                     : localStorage.getItem("avatar")
                             }
@@ -247,7 +250,7 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(7)}
                         />
                     </div>
-                    <div className="col-3 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -260,9 +263,7 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(8)}
                         />
                     </div>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col-6 text-center">
+                    <div className="col-4 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
@@ -275,7 +276,9 @@ function MyTeam(props) {
                             onClick={() => handleClickOpen(9)}
                         />
                     </div>
-                    <div className="col-6 text-center">
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col-12 text-center">
                         <Avatar
                             alt="player-avatar"
                             src={
