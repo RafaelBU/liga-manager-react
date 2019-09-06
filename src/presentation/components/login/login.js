@@ -7,6 +7,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import googleLogo from "../../assets/google.svg";
+import facebookLogo from "../../assets/facebook.svg";
 import "./login.scss";
 //import GoogleLogin from "react-google-login";
 
@@ -74,7 +76,7 @@ function Login(props) {
                                 className={classes.button}
                                 onClick={() => loginSucces()}
                             >
-                                Log in with google
+                                <img src={googleLogo} alt="google-logo" />
                             </Button>
                         </div>
                         <div>
@@ -84,7 +86,7 @@ function Login(props) {
                                 className={classes.button}
                                 onClick={() => loginSucces()}
                             >
-                                Log in with facebook
+                                <img src={facebookLogo} alt="facebook-logo" />
                             </Button>
                         </div>
                     </div>
