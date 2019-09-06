@@ -21,7 +21,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(theme => ({
     title: {
-        margin: 20
+        marginTop: 100,
+        marginBottom: 20
     },
     avatar: {
         textAlign: "center"

@@ -13,3 +13,17 @@ export const getDataDispatch = page => {
             });
     });
 };
+
+export const updateDataDispatch = data => {
+    return new Promise((resolve, reject) => {
+        axios
+            .patch("users/" + data.id, { data })
+            .then(response => {
+                console.log("EL RESPONSE ES ", response);
+                resolve(response.data.data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+};

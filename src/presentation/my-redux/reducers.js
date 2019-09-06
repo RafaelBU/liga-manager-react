@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 import * as actions from "./actions.js";
 
 const APP_DEFAULT = {
@@ -15,9 +15,20 @@ const app = (state = APP_DEFAULT, action) => {
                 lastData: action.data,
                 loadDataUser: true
             };
+        case actions.SEND_UPDATE_DATA_DISPATCH:
+            return {
+                ...state,
+                dataUser: updateArrayUsers(state.dataUser, action.data)
+            }
         default:
             return state;
     }
 };
 
-export const combinedReducers = combineReducers({app});
+const updateArrayUsers = (players, newData) => {
+    return players.map(player => {
+        return player.id === newData.id ? newData : player;
+    })
+};
+
+export const combinedReducers = combineReducers({ app });

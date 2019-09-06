@@ -1,8 +1,16 @@
 import * as apiDataSource from "../datasources/apiDataSource";
-import {Observable} from "rxjs";
+import { Observable } from "rxjs";
 
 export const getDataDispatch = page => {
     return Observable.from(apiDataSource.getDataDispatch(page))
+        .take(1)
+        .catch(error => {
+            throw parseError(error);
+        });
+};
+
+export const updateDataDispatch = data => {
+    return Observable.from(apiDataSource.updateDataDispatch(data))
         .take(1)
         .catch(error => {
             throw parseError(error);

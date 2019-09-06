@@ -15,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
+import ModalEdit from "../modals/modalEdit";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,8 +26,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper
     },
     title: {
-        margin: 20,
-        marginBottom: 0
+        margin: 20
     },
     inline: {
         display: "inline"
@@ -38,9 +38,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Players(props) {
-    const { getDataDispatch, loadDataUser } = props;
+    const { getDataDispatch, loadDataUser, updateDataDispatch } = props;
+
     const [page, setPage] = useState(1);
-    const [positions] = useState(["Portero", "Defensa", "Medio", "Delantero"]);
+    // const [positions] = useState(["Portero", "Defensa", "Medio", "Delantero"]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState({});
+    const [isUpdate, setIsUpdate] = useState(false);
     //const [refContainer, setRefContainer] = useState(null);
 
     useEffect(() => {
@@ -49,20 +53,43 @@ function Players(props) {
         }
     }, [getDataDispatch, page, loadDataUser]);
 
+    useEffect(() => {
+        if (isUpdate) {
+            updateDataDispatch(selectedPlayer);
+            setIsUpdate(false);
+        }
+    })
+
+    const onEditPlayer = player => {
+        setSelectedPlayer(player);
+        setShowModal(true)
+    };
+
+    const updatePlayer = position => {
+        setSelectedPlayer({ ...selectedPlayer, position });
+        setIsUpdate(true);
+        setShowModal(false);
+    };
+
     const classes = useStyles();
+
+    console.log("Info actualizada ", selectedPlayer);
+
+    console.log("DATA USER ES ", props.dataUser);
 
     return (
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            <Typography
-                variant="h4"
-                component="h4"
-                align="center"
-                classes={{ root: classes.title }}
-            >
-                Jugadores <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
-            </Typography>
-            <div className="container-fluid">
+            {showModal ? <ModalEdit data={selectedPlayer} onClose={() => setShowModal(false)} onUpdate={(newData) => updatePlayer(newData)} /> : ""}
+            <div className="container-fluid" style={{ marginTop: 100 }}>
+                <Typography
+                    variant="h4"
+                    component="h4"
+                    align="center"
+                    classes={{ root: classes.title }}
+                >
+                    Jugadores <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
+                </Typography>
                 <List className={classes.root}>
                     {props.loadDataUser
                         ? props.dataUser.map((user, index) => {
@@ -73,13 +100,12 @@ function Players(props) {
                                             <Avatar
                                                 alt="player-avatar"
                                                 src={user.avatar}
+                                                onClick={() => onEditPlayer(user)}
                                             />
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={
                                                 user.first_name
-                                                //   " " +
-                                                //   user.last_name
                                             }
                                             classes={{ root: classes.itemText }}
                                         />
@@ -90,11 +116,7 @@ function Players(props) {
                                           /> */}
                                         <ListItemText
                                             primary={
-                                                positions[
-                                                Math.floor(
-                                                    Math.random() * 4
-                                                )
-                                                ]
+                                                user.position ? user.position : "Sin asignar"
                                             }
                                             classes={{ root: classes.itemText }}
                                         />
@@ -139,6 +161,7 @@ function Players(props) {
 }
 
 const getDataDispatch = actions.getDataDispatch;
+const updateDataDispatch = actions.updateDataDispatch;
 
 export default connect(
     (appState, ownProps) => ({
@@ -149,7 +172,8 @@ export default connect(
     dispatch =>
         bindActionCreators(
             {
-                getDataDispatch
+                getDataDispatch,
+                updateDataDispatch
             },
             dispatch
         )

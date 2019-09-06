@@ -57,15 +57,15 @@ function Home() {
     return (
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            <Typography
+            {/* <Typography
                 variant="h4"
                 component="h4"
                 align="center"
                 classes={{ root: classes.title }}
             >
                 Liga Manager <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
-            </Typography>
-            <div className="container-fluid">
+            </Typography> */}
+            <div className="container-fluid" style={{ marginTop: 100 }}>
                 <div
                     style={{
                         display: "flex",
