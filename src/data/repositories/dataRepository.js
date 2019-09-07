@@ -17,6 +17,14 @@ export const updateDataDispatch = data => {
         });
 };
 
+export const deleteDataDispath = id => {
+    return Observable.from(apiDataSource.deleteDataDispath(id))
+        .take(1)
+        .catch(error => {
+            throw parseError(error);
+        });
+};
+
 const parseError = error => {
     switch (error.response.status) {
         case 401:

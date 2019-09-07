@@ -95,7 +95,7 @@ function MyTeam(props) {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            <ul>
+                            {/* <ul>
                                 {props.dataUser.map(player => {
                                     return (
                                         <li>
@@ -110,7 +110,7 @@ function MyTeam(props) {
                                         </li>
                                     );
                                 })}
-                            </ul>
+                            </ul> */}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

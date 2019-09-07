@@ -14,6 +14,8 @@ export const GET_DATA_DISPATCH = "GET_DATA_DISPATCH";
 export const SEND_DATA_DISPATCH = "SEND_DATA_DISPATCH";
 export const UPDATE_DATA_DISPATCH = "UPDATE_DATA_DISPATCH";
 export const SEND_UPDATE_DATA_DISPATCH = "SEND_UPDATE_DATA_DISPATCH";
+export const DELETE_DATA_DISPATCH = "DELETE_DATA_DISPATCH";
+export const SEND_DELETE_DATA_DISPATCH = "SEND_DELETE_DATA_DISPATCH";
 
 export const getDataDispatch = page => {
     return {
@@ -33,12 +35,26 @@ export const updateDataDispatch = player => {
     return {
         type: UPDATE_DATA_DISPATCH,
         player
-    }
+    };
 };
 
 export const sendUpdateDataDispatch = data => {
     return {
         type: SEND_UPDATE_DATA_DISPATCH,
+        data
+    };
+};
+
+export const deleteDataDispath = player => {
+    return {
+        type: DELETE_DATA_DISPATCH,
+        playerId: player.id
+    };
+};
+
+export const sendDeleteDataDispatch = data => {
+    return {
+        type: SEND_DELETE_DATA_DISPATCH,
         data
     }
 }
@@ -59,4 +75,12 @@ const updateDataEpic = action$ =>
             .catch(err => Observable.of(error(err)))
     );
 
-export const combinedEpics = combineEpics(getDataEpic, updateDataEpic);
+const deleteDataEpic = action$ =>
+    action$.ofType(DELETE_DATA_DISPATCH).mergeMap(action =>
+        dataRepository
+            .deleteDataDispath(action.playerId)
+            .map(sendDeleteDataDispatch)
+            .catch(err => Observable.of(error(err)))
+    );
+
+export const combinedEpics = combineEpics(getDataEpic, updateDataEpic, deleteDataEpic);

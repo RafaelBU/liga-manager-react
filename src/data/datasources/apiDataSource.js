@@ -19,8 +19,22 @@ export const updateDataDispatch = data => {
         axios
             .patch("users/" + data.id, { data })
             .then(response => {
-                console.log("EL RESPONSE ES ", response);
                 resolve(response.data.data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+};
+
+export const deleteDataDispath = id => {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete("users/" + id)
+            .then(response => {
+                /* console.log("EL RESPONSE ES ", response);
+                resolve(response.data.data); */
+                resolve(id)
             })
             .catch(error => {
                 reject(error);

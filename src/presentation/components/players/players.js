@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import DeleteIcon from "@material-ui/icons/Delete";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
@@ -38,38 +39,61 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Players(props) {
-    const { getDataDispatch, loadDataUser, updateDataDispatch } = props;
+    const { getDataDispatch, loadDataUser, updateDataDispatch, deleteDataDispath } = props;
 
     const [page, setPage] = useState(1);
     // const [positions] = useState(["Portero", "Defensa", "Medio", "Delantero"]);
-    const [showModal, setShowModal] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
+    const [showModalCreate, setShowModalCreate] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState({});
     const [isUpdate, setIsUpdate] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     //const [refContainer, setRefContainer] = useState(null);
 
+    // Load player data
     useEffect(() => {
         if (!loadDataUser || page > 1) {
             getDataDispatch(page);
         }
     }, [getDataDispatch, page, loadDataUser]);
 
+    // Update player
     useEffect(() => {
         if (isUpdate) {
             updateDataDispatch(selectedPlayer);
             setIsUpdate(false);
         }
-    })
+    });
+
+    // Delete player
+    useEffect(() => {
+        if (isDelete) {
+            deleteDataDispath(selectedPlayer);
+            setIsDelete(false);
+        }
+    });
+
+    // Create player
 
     const onEditPlayer = player => {
         setSelectedPlayer(player);
-        setShowModal(true)
+        setShowModalEdit(true)
     };
 
     const updatePlayer = position => {
         setSelectedPlayer({ ...selectedPlayer, position });
         setIsUpdate(true);
-        setShowModal(false);
+        setShowModalEdit(false);
     };
+
+    const deletePlayer = player => {
+        setSelectedPlayer(player);
+        setIsDelete(true);
+    };
+
+    const createPlayer = () => {
+
+    }
 
     const classes = useStyles();
 
@@ -80,7 +104,7 @@ function Players(props) {
     return (
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            {showModal ? <ModalEdit data={selectedPlayer} onClose={() => setShowModal(false)} onUpdate={(newData) => updatePlayer(newData)} /> : ""}
+            {showModalEdit ? <ModalEdit data={selectedPlayer} onClose={() => setShowModalEdit(false)} onUpdate={(newData) => updatePlayer(newData)} /> : ""}
             <div className="container-fluid" style={{ marginTop: 100 }}>
                 <Typography
                     variant="h4"
@@ -126,7 +150,7 @@ function Players(props) {
                                               <EditIcon />
                                           </ListItemIcon> */}
                                         <ListItemIcon>
-                                            <DeleteIcon />
+                                            <DeleteIcon onClick={() => deletePlayer(user)} />
                                         </ListItemIcon>
                                         {/* <ListItemText
                                               primary="Brunch this weekend?"
@@ -155,6 +179,14 @@ function Players(props) {
                         })
                         : "Load..."}
                 </List>
+                <AddCircleIcon color="primary" style={{
+                    position: "fixed",
+                    right: 0,
+                    bottom: 0,
+                    width: 80,
+                    height: 80,
+                    margin: 20
+                }} onClick={() => createPlayer()} />
             </div>
         </div>
     );
@@ -162,6 +194,7 @@ function Players(props) {
 
 const getDataDispatch = actions.getDataDispatch;
 const updateDataDispatch = actions.updateDataDispatch;
+const deleteDataDispath = actions.deleteDataDispath;
 
 export default connect(
     (appState, ownProps) => ({
@@ -173,7 +206,8 @@ export default connect(
         bindActionCreators(
             {
                 getDataDispatch,
-                updateDataDispatch
+                updateDataDispatch,
+                deleteDataDispath
             },
             dispatch
         )
