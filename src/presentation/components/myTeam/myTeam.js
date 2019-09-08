@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
@@ -33,36 +32,36 @@ const useStyles = makeStyles(theme => ({
 function MyTeam(props) {
     const [showModalPlayers, setShowModalPlayers] = useState(false);
     const [showModalHelp, setShowModalHelp] = useState(false);
-    const [team, setTeam] = useState([
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-    ]);
-
+    const [isChangeTeam, setIsChangeTeam] = useState(false);
+    const [avatar, setAvatar] = useState("");
     const [indexPlayer, setIndexPlayer] = useState(-1);
-    const { getDataDispatch, loadDataUser } = props;
+    const [positionSelected, setPositionSelected] = useState("");
+    const { getDataDispatch, loadDataUser, setTeamDispatch, team } = props;
     const [page, setPage] = useState(1);
     //const [refContainer, setRefContainer] = useState(null);
 
+    // Load players data
     useEffect(() => {
         if (!loadDataUser || page > 1) {
             getDataDispatch(page);
         }
     }, [getDataDispatch, page, loadDataUser]);
 
+
+    // Chante team
+    useEffect(() => {
+        if (isChangeTeam) {
+            setTeamDispatch(indexPlayer, avatar);
+            setIsChangeTeam(false);
+        }
+    });
+
     const classes = useStyles();
 
-    const handleClickOpen = index => {
+    const handleClickOpen = (index, position) => {
         console.log("index en el open es ", index);
         setIndexPlayer(index);
+        setPositionSelected(position);
         setShowModalPlayers(true);
     };
 
@@ -73,8 +72,8 @@ function MyTeam(props) {
     const setPlayer = avatar => {
         console.log("avatar es ", avatar);
         console.log("indexPlayer es ", indexPlayer);
-        team[indexPlayer] = avatar;
-        setTeam([...team]);
+        setAvatar(avatar);
+        setIsChangeTeam(true);
         setShowModalPlayers(false);
     };
 
@@ -96,24 +95,21 @@ function MyTeam(props) {
                         Cambiar jugador
                     </DialogTitle>
                     <DialogContent>
-                        <DialogContentText id="alert-dialog-slide-description">
-                            {/* <ul>
-                                {props.dataUser.map(player => {
-                                    return (
-                                        <li>
-                                            <Avatar
-                                                src={player.avatar}
-                                                size={75}
-                                                round={true}
-                                                onClick={() =>
-                                                    setPlayer(player.avatar)
-                                                }
-                                            />
-                                        </li>
-                                    );
-                                })}
-                            </ul> */}
-                        </DialogContentText>
+                        {props.dataUser.filter(player => player.position === positionSelected).map((player, index) => {
+                            return (
+                                <Avatar
+                                    key={index}
+                                    src={player.avatar}
+                                    size={65}
+                                    round={true}
+                                    style={{ marginRight: 8, marginBottom: 8 }}
+                                    onClick={() =>
+                                        setPlayer(player.avatar)
+                                    }
+                                />
+
+                            );
+                        })}
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} color="primary">
@@ -155,7 +151,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(0)}
+                            onClick={() => handleClickOpen(0, "Portero")}
                         />
                     </div>
                 </div>
@@ -170,7 +166,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(1)}
+                            onClick={() => handleClickOpen(1, "Defensa")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -183,7 +179,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(2)}
+                            onClick={() => handleClickOpen(2, "Defensa")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -196,7 +192,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(3)}
+                            onClick={() => handleClickOpen(3, "Defensa")}
                         />
                     </div>
                 </div>
@@ -211,7 +207,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(4)}
+                            onClick={() => handleClickOpen(4, "Medio")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -224,7 +220,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(5)}
+                            onClick={() => handleClickOpen(5, "Medio")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -237,7 +233,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(6)}
+                            onClick={() => handleClickOpen(6, "Medio")}
                         />
                     </div>
                 </div>
@@ -252,7 +248,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(7)}
+                            onClick={() => handleClickOpen(7, "Medio")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -265,7 +261,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(8)}
+                            onClick={() => handleClickOpen(8, "Medio")}
                         />
                     </div>
                     <div className="col-4 text-center">
@@ -278,7 +274,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(9)}
+                            onClick={() => handleClickOpen(9, "Medio")}
                         />
                     </div>
                 </div>
@@ -293,7 +289,7 @@ function MyTeam(props) {
                             }
                             size={75}
                             round={true}
-                            onClick={() => handleClickOpen(10)}
+                            onClick={() => handleClickOpen(10, "Delantero")}
                         />
                     </div>
                 </div>
@@ -303,17 +299,20 @@ function MyTeam(props) {
 }
 
 const getDataDispatch = actions.getDataDispatch;
+const setTeamDispatch = actions.setTeamDispatch;
 
 export default connect(
     (appState, ownProps) => ({
         dataUser: appState.app.dataUser,
         lastData: appState.app.lastData,
-        loadDataUser: appState.app.loadDataUser
+        loadDataUser: appState.app.loadDataUser,
+        team: appState.app.team
     }),
     dispatch =>
         bindActionCreators(
             {
-                getDataDispatch
+                getDataDispatch,
+                setTeamDispatch
             },
             dispatch
         )

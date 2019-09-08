@@ -18,6 +18,7 @@ export const DELETE_DATA_DISPATCH = "DELETE_DATA_DISPATCH";
 export const SEND_DELETE_DATA_DISPATCH = "SEND_DELETE_DATA_DISPATCH";
 export const CREATE_DATA_DISPATCH = "CREATE_DATA_DISPATCH";
 export const SEND_CREATE_DATA_DISPATCH = "SEND_CREATE_DATA_DISPATCH";
+export const SET_TEAM_DISPATCH = "SET_TEAM_DISPATCH";
 
 export const getDataDispatch = page => {
     return {
@@ -74,6 +75,14 @@ export const sendCreateDataDispatch = data => {
         data
     };
 };
+
+export const setTeamDispatch = (index, avatar) => {
+    return {
+        type: SET_TEAM_DISPATCH,
+        index,
+        avatar
+    }
+}
 
 const getDataEpic = action$ =>
     action$.ofType(GET_DATA_DISPATCH).mergeMap(action =>
