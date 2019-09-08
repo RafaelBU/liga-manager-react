@@ -14,6 +14,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
+import ModalHelp from "../modals/modalHelp";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -30,7 +31,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MyTeam(props) {
-    const [open, setOpen] = useState(false);
+    const [showModalPlayers, setShowModalPlayers] = useState(false);
+    const [showModalHelp, setShowModalHelp] = useState(false);
     const [team, setTeam] = useState([
         null,
         null,
@@ -61,11 +63,11 @@ function MyTeam(props) {
     const handleClickOpen = index => {
         console.log("index en el open es ", index);
         setIndexPlayer(index);
-        setOpen(true);
+        setShowModalPlayers(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setShowModalPlayers(false);
     };
 
     const setPlayer = avatar => {
@@ -73,7 +75,7 @@ function MyTeam(props) {
         console.log("indexPlayer es ", indexPlayer);
         team[indexPlayer] = avatar;
         setTeam([...team]);
-        setOpen(false);
+        setShowModalPlayers(false);
     };
 
     console.log("team es ", team);
@@ -83,7 +85,7 @@ function MyTeam(props) {
             <Navbar />
             <div >
                 <Dialog
-                    open={open}
+                    open={showModalPlayers}
                     TransitionComponent={Transition}
                     keepMounted
                     onClose={handleClose}
@@ -123,13 +125,15 @@ function MyTeam(props) {
                     </DialogActions>
                 </Dialog>
             </div>
+            {showModalHelp ? <ModalHelp titleHelp="Alineación" textHelp1="Esta es la sección donde puedes crear tu propia alineación para hacer el mejor equipo posible."
+                textHelp2="Pulsa sobre cada posición del campo para asignar a uno de los jugadores del mercado de fichajes." onClose={() => setShowModalHelp(false)} /> : ""}
             <Typography
                 variant="h4"
                 component="h4"
                 align="center"
                 classes={{ root: classes.title }}
             >
-                Alineación <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
+                Alineación <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => setShowModalHelp(true)} />
             </Typography>
             <div
                 className="container-fluid"

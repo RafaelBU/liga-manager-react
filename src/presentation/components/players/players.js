@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
 import ModalEdit from "../modals/modalEdit";
+import ModalHelp from "../modals/modalHelp";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,7 +46,10 @@ function Players(props) {
     // const [positions] = useState(["Portero", "Defensa", "Medio", "Delantero"]);
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalCreate, setShowModalCreate] = useState(false);
+    const [showModalHelp, setShowModalHelp] = useState(false);
+
     const [selectedPlayer, setSelectedPlayer] = useState({});
+
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     //const [refContainer, setRefContainer] = useState(null);
@@ -105,6 +109,9 @@ function Players(props) {
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
             {showModalEdit ? <ModalEdit data={selectedPlayer} onClose={() => setShowModalEdit(false)} onUpdate={(newData) => updatePlayer(newData)} /> : ""}
+            {showModalHelp ? <ModalHelp titleHelp="Mercado de fichajes"
+                textHelp1="Este es el mercado de fichajes, donde puedes ver todos los jugadores disponibles para crear tu plantilla."
+                textHelp2="Puedes cambiar la posición de los jugadores, eliminarlos o añadir nuevos jugadores." onClose={() => setShowModalHelp(false)} /> : ""}
             <div className="container-fluid" style={{ marginTop: 100 }}>
                 <Typography
                     variant="h4"
@@ -112,7 +119,7 @@ function Players(props) {
                     align="center"
                     classes={{ root: classes.title }}
                 >
-                    Jugadores <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => alert("hola")} />
+                    Jugadores <HelpOutlineIcon style={{ cursor: "pointer" }} onClick={() => setShowModalHelp(true)} />
                 </Typography>
                 <List className={classes.root}>
                     {props.loadDataUser
