@@ -31,10 +31,21 @@ export const deleteDataDispath = id => {
     return new Promise((resolve, reject) => {
         axios
             .delete("users/" + id)
-            .then(response => {
-                /* console.log("EL RESPONSE ES ", response);
-                resolve(response.data.data); */
+            .then(() => {
                 resolve(id)
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+};
+
+export const createDataDispatch = player => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post("users/", player)
+            .then(response => {
+                resolve(response.data)
             })
             .catch(error => {
                 reject(error);

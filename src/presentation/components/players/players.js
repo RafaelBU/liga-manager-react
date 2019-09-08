@@ -18,6 +18,7 @@ import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
 import ModalEdit from "../modals/modalEdit";
 import ModalHelp from "../modals/modalHelp";
+import ModalCreate from "../modals/modalCreate";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,10 +41,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Players(props) {
-    const { getDataDispatch, loadDataUser, updateDataDispatch, deleteDataDispath } = props;
+    const { getDataDispatch, loadDataUser, updateDataDispatch, deleteDataDispath, createDataDispatch } = props;
 
     const [page, setPage] = useState(1);
-    // const [positions] = useState(["Portero", "Defensa", "Medio", "Delantero"]);
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalHelp, setShowModalHelp] = useState(false);
@@ -52,6 +52,7 @@ function Players(props) {
 
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [isCreate, setIsCreate] = useState(false);
     //const [refContainer, setRefContainer] = useState(null);
 
     // Load player data
@@ -78,6 +79,12 @@ function Players(props) {
     });
 
     // Create player
+    useEffect(() => {
+        if (isCreate) {
+            createDataDispatch(selectedPlayer);
+            setIsCreate(false);
+        }
+    });
 
     const onEditPlayer = player => {
         setSelectedPlayer(player);
@@ -95,9 +102,15 @@ function Players(props) {
         setIsDelete(true);
     };
 
-    const createPlayer = () => {
+    const onCreatePlayer = () => {
+        setShowModalCreate(true);
+    };
 
-    }
+    const createPlayer = newPlayer => {
+        setSelectedPlayer(newPlayer);
+        setIsCreate(true);
+        setShowModalCreate(false);
+    };
 
     const classes = useStyles();
 
@@ -108,10 +121,11 @@ function Players(props) {
     return (
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            {showModalEdit ? <ModalEdit data={selectedPlayer} onClose={() => setShowModalEdit(false)} onUpdate={(newData) => updatePlayer(newData)} /> : ""}
+            {showModalEdit ? <ModalEdit data={selectedPlayer} onClose={() => setShowModalEdit(false)} onUpdate={updatePlayer} /> : ""}
             {showModalHelp ? <ModalHelp titleHelp="Mercado de fichajes"
                 textHelp1="Este es el mercado de fichajes, donde puedes ver todos los jugadores disponibles para crear tu plantilla."
                 textHelp2="Puedes cambiar la posición de los jugadores, eliminarlos o añadir nuevos jugadores." onClose={() => setShowModalHelp(false)} /> : ""}
+            {showModalCreate ? <ModalCreate onClose={() => setShowModalCreate(false)} onCreate={createPlayer} /> : ""}
             <div className="container-fluid" style={{ marginTop: 100 }}>
                 <Typography
                     variant="h4"
@@ -190,10 +204,10 @@ function Players(props) {
                     position: "fixed",
                     right: 0,
                     bottom: 0,
-                    width: 80,
-                    height: 80,
+                    width: 70,
+                    height: 70,
                     margin: 20
-                }} onClick={() => createPlayer()} />
+                }} onClick={onCreatePlayer} />
             </div>
         </div>
     );
@@ -202,6 +216,7 @@ function Players(props) {
 const getDataDispatch = actions.getDataDispatch;
 const updateDataDispatch = actions.updateDataDispatch;
 const deleteDataDispath = actions.deleteDataDispath;
+const createDataDispatch = actions.createDataDispatch;
 
 export default connect(
     (appState, ownProps) => ({
@@ -214,7 +229,8 @@ export default connect(
             {
                 getDataDispatch,
                 updateDataDispatch,
-                deleteDataDispath
+                deleteDataDispath,
+                createDataDispatch
             },
             dispatch
         )

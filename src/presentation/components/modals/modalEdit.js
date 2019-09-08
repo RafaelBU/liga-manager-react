@@ -39,6 +39,8 @@ function ModalEdit(props) {
 
     return (
         <Dialog
+            disableBackdropClick
+            disableEscapeKeyDown
             open={true}
             TransitionComponent={Transition}
             keepMounted
@@ -51,28 +53,40 @@ function ModalEdit(props) {
             </DialogTitle>
             <DialogContent>
                 <div>
-                    <Avatar src={props.data.avatar} alt="player-avatar" size={80} round={true} />
-                    <Typography
-                        variant="h5"
-                        component="h5"
-                    >
-                        {props.data.first_name + " " + props.data.last_name}
-                    </Typography>
-                    <form className={classes.root} autoComplete="off">
-                        <FormControl className={classes.formControl}><InputLabel htmlFor="position-simple">Posición</InputLabel>
-                            <Select
-                                value={position}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "position",
-                                    id: 'position-simple',
-                                }}
-                            >
-                                <MenuItem value={"Delantero"}>Delantero</MenuItem>
-                                <MenuItem value={"Defensa"}>Defensa</MenuItem>
-                                <MenuItem value={"Medio"}>Medio</MenuItem>
-                                <MenuItem value={"Portero"}>Portero</MenuItem>
-                            </Select></FormControl></form>
+                    <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                        <Avatar src={props.data.avatar} alt="player-avatar" size={80} round={true} />
+                        <Typography
+                            variant="h5"
+                            component="h5"
+                            style={{ alignSelf: "center", marginLeft: 10 }}
+                        >
+                            {props.data.first_name + " " + props.data.last_name}
+                        </Typography>
+                    </div>
+
+                    {/*  <form className={classes.root} autoComplete="off">
+                        <FormControl className={classes.formControl}> */}
+                    <div style={{ marginTop: 20 }}>
+                        <InputLabel htmlFor="position-simple">Posición</InputLabel>
+                        <Select
+                            value={position}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "position",
+                                id: 'position-simple',
+                            }}
+                            style={{ width: "100%" }}
+                        >
+                            <MenuItem value={"Delantero"}>Delantero</MenuItem>
+                            <MenuItem value={"Defensa"}>Defensa</MenuItem>
+                            <MenuItem value={"Medio"}>Medio</MenuItem>
+                            <MenuItem value={"Portero"}>Portero</MenuItem>
+                        </Select>
+
+                    </div>
+
+                    {/*    </FormControl>
+                            </form> */}
 
                 </div>
             </DialogContent>
