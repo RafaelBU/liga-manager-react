@@ -3,21 +3,12 @@ import Navbar from "../navbar/navbar";
 import Avatar from "react-avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions } from "../../my-redux/my-redux";
 import ModalHelp from "../modals/modalHelp";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+import ModalTeam from "../modals/modalTeam";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -37,15 +28,14 @@ function MyTeam(props) {
     const [indexPlayer, setIndexPlayer] = useState(-1);
     const [positionSelected, setPositionSelected] = useState("");
     const { getDataDispatch, loadDataUser, setTeamDispatch, team } = props;
-    const [page, setPage] = useState(1);
-    //const [refContainer, setRefContainer] = useState(null);
 
     // Load players data
     useEffect(() => {
-        if (!loadDataUser || page > 1) {
-            getDataDispatch(page);
+        if (!loadDataUser) {
+            getDataDispatch(1);
+            getDataDispatch(2);
         }
-    }, [getDataDispatch, page, loadDataUser]);
+    }, [getDataDispatch, loadDataUser]);
 
 
     // Chante team
@@ -82,45 +72,7 @@ function MyTeam(props) {
     return (
         <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
             <Navbar />
-            <div >
-                <Dialog
-                    open={showModalPlayers}
-                    TransitionComponent={Transition}
-                    keepMounted
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
-                >
-                    <DialogTitle id="alert-dialog-slide-title">
-                        Cambiar jugador
-                    </DialogTitle>
-                    <DialogContent>
-                        {props.dataUser.filter(player => player.position === positionSelected).map((player, index) => {
-                            return (
-                                <Avatar
-                                    key={index}
-                                    src={player.avatar}
-                                    size={65}
-                                    round={true}
-                                    style={{ marginRight: 8, marginBottom: 8 }}
-                                    onClick={() =>
-                                        setPlayer(player.avatar)
-                                    }
-                                />
-
-                            );
-                        })}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancelar
-                        </Button>
-                        <Button onClick={handleClose} color="primary">
-                            Aceptar
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+            {showModalPlayers ? <ModalTeam data={props.dataUser} positionSelected={positionSelected} onSetPlayer={(avatar) => setPlayer(avatar)} onClose={handleClose} /> : ""}
             {showModalHelp ? <ModalHelp titleHelp="Alineación" textHelp1="Esta es la sección donde puedes crear tu propia alineación para hacer el mejor equipo posible."
                 textHelp2="Pulsa sobre cada posición del campo para asignar a uno de los jugadores del mercado de fichajes." onClose={() => setShowModalHelp(false)} /> : ""}
             <Typography
