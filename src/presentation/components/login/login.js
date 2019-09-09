@@ -8,9 +8,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import googleLogo from "../../assets/google.svg";
-import facebookLogo from "../../assets/facebook.svg";
+// import facebookLogo from "../../assets/facebook.svg";
 import "./login.scss";
-//import GoogleLogin from "react-google-login";
+import GoogleLogin from "react-google-login";
+// import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
 function Login(props) {
     // const responseGoogle = response => {
@@ -19,12 +20,20 @@ function Login(props) {
 
     const [isAuth, setIsAuth] = useState(false);
 
-    const loginSucces = () => {
-        localStorage.setItem("token", 123);
-        localStorage.setItem("name", "Rafael Buzón Urbano");
-        localStorage.setItem("avatar", avatar);
+    const loginSucces = response => {
+        localStorage.setItem("token", response.accessToken);
+        localStorage.setItem("name", response.profileObj.name);
+        localStorage.setItem("avatar", response.profileObj.imageUrl);
         setIsAuth(true);
     };
+
+    const loginFailure = response => {
+        console.log("response failure ", response);
+    };
+
+    // const responseFacebook = response => {
+    //     console.log("RESPONSE DE FACEBOOK ", response);
+    // };
 
     const {from} = props.location.state || {from: {pathname: "/home"}};
 
@@ -69,7 +78,22 @@ function Login(props) {
                 </CardContent>
                 <CardActions classes={{root: classes.cardActions}}>
                     <div>
-                        <div>
+                        <GoogleLogin
+                            clientId="784406214165-b9kjjdc4j062angd690qektitsoej31p.apps.googleusercontent.com"
+                            render={renderProps => (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={renderProps.onClick}
+                                >
+                                    <img src={googleLogo} alt="google-logo" />
+                                </Button>
+                            )}
+                            onSuccess={loginSucces}
+                            onFailure={loginFailure}
+                        />
+                        {/* <div>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -78,8 +102,8 @@ function Login(props) {
                             >
                                 <img src={googleLogo} alt="google-logo" />
                             </Button>
-                        </div>
-                        <div>
+                        </div> */}
+                        {/* <div>
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -89,18 +113,29 @@ function Login(props) {
                                 <img src={facebookLogo} alt="facebook-logo" />
                             </Button>
                         </div>
+                        <FacebookLogin
+                            appId="385226395712116"
+                            fields="name,email,picture"
+                            callback={responseFacebook}
+                            render={renderProps => (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={renderProps.onClick}
+                                >
+                                    <img
+                                        src={facebookLogo}
+                                        alt="facebook-logo"
+                                    />
+                                </Button>
+                            )}
+                        /> */}
                     </div>
                 </CardActions>
             </Card>
         </div>
     );
-
-    /*<GoogleLogin
-            clientId="784406214165-b9kjjdc4j062angd690qektitsoej31p.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
-            buttonText="LOGIN WITH GOOGLE"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-        />*/
 }
 
 export default Login;
