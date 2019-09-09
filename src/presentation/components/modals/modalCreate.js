@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useState, useEffect} from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
 import Avatar from "react-avatar";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,12 +18,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(theme => ({
     root: {
-        display: 'flex',
-        flexWrap: 'no-wrap',
+        display: "flex",
+        flexWrap: "no-wrap"
     },
     input: {
-        display: 'none',
-    },
+        display: "none"
+    }
 }));
 
 function ModalCreate(props) {
@@ -47,13 +47,27 @@ function ModalCreate(props) {
     };
 
     const handleChangeAvatar = event => {
-        const urlCreator = window.URL || window.webkitURL;
-        const imageUrl = urlCreator.createObjectURL(new Blob([event.target.files[0]]));
-        setAvatar(imageUrl);
+        // const urlCreator = window.URL || window.webkitURL;
+        // const imageUrl = urlCreator.createObjectURL(new Blob([event.target.files[0]]));
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            const myDataUrl = reader.result;
+            setAvatar(myDataUrl);
+            // do something with the URL in the DOM,
+            // then save it to local storage
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+        // setAvatar(imageUrl);
     };
 
     useEffect(() => {
-        setIsEnable(first_name !== "" && last_name !== "" && position !== "" && avatar !== "");
+        setIsEnable(
+            first_name !== "" &&
+                last_name !== "" &&
+                position !== "" &&
+                avatar !== ""
+        );
     }, [first_name, last_name, position, avatar]);
 
     return (
@@ -75,33 +89,35 @@ function ModalCreate(props) {
                     <TextField
                         id="textfield-name"
                         label="Nombre"
-                        style={{ width: "97%", margin: 8 }}
+                        style={{width: "97%", margin: 8}}
                         margin="normal"
                         InputLabelProps={{
-                            shrink: true,
+                            shrink: true
                         }}
                         onChange={handleChangeName}
                     />
                     <TextField
                         id="textfield-last-name"
                         label="Apellido"
-                        style={{ width: "97%", margin: 8 }}
+                        style={{width: "97%", margin: 8}}
                         margin="normal"
                         InputLabelProps={{
-                            shrink: true,
+                            shrink: true
                         }}
                         onChange={handleChangeLastName}
                     />
-                    <div style={{ margin: 8 }}>
-                        <InputLabel htmlFor="position-simple">Posición</InputLabel>
+                    <div style={{margin: 8}}>
+                        <InputLabel htmlFor="position-simple">
+                            Posición
+                        </InputLabel>
                         <Select
                             value={position}
                             onChange={handleChangePosition}
                             inputProps={{
                                 name: "position",
-                                id: 'position-simple',
+                                id: "position-simple"
                             }}
-                            style={{ width: "100%" }}
+                            style={{width: "100%"}}
                         >
                             <MenuItem value={"Delantero"}>Delantero</MenuItem>
                             <MenuItem value={"Defensa"}>Defensa</MenuItem>
@@ -109,7 +125,12 @@ function ModalCreate(props) {
                             <MenuItem value={"Portero"}>Portero</MenuItem>
                         </Select>
                     </div>
-                    <Avatar src={avatar} alt="selected-avatar" size={90} round={true} />
+                    <Avatar
+                        src={avatar}
+                        alt="selected-avatar"
+                        size={90}
+                        round={true}
+                    />
                     <input
                         accept="image/*"
                         className={classes.input}
@@ -117,8 +138,12 @@ function ModalCreate(props) {
                         type="file"
                         onChange={handleChangeAvatar}
                     />
-                    <label htmlFor="button-file" style={{ margin: 8 }}>
-                        <Button variant="contained" component="span" color="primary">
+                    <label htmlFor="button-file" style={{margin: 8}}>
+                        <Button
+                            variant="contained"
+                            component="span"
+                            color="primary"
+                        >
                             Añadir foto
                         </Button>
                     </label>
@@ -128,15 +153,28 @@ function ModalCreate(props) {
                 <Button onClick={props.onClose} color="primary">
                     Cancelar
                 </Button>
-                {isEnable ? <Button onClick={() => props.onCreate({ first_name, last_name, position, avatar })} color="primary">
-                    Aceptar
-                </Button> : <Button color="primary" disabled>
+                {isEnable ? (
+                    <Button
+                        onClick={() =>
+                            props.onCreate({
+                                first_name,
+                                last_name,
+                                position,
+                                avatar
+                            })
+                        }
+                        color="primary"
+                    >
                         Aceptar
-                </Button>}
-
+                    </Button>
+                ) : (
+                    <Button color="primary" disabled>
+                        Aceptar
+                    </Button>
+                )}
             </DialogActions>
         </Dialog>
     );
-};
+}
 
 export default ModalCreate;

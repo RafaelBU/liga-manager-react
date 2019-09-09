@@ -21,9 +21,13 @@ function Login(props) {
     const [isAuth, setIsAuth] = useState(false);
 
     const loginSucces = response => {
-        localStorage.setItem("token", response.accessToken);
-        localStorage.setItem("name", response.profileObj.name);
-        localStorage.setItem("avatar", response.profileObj.imageUrl);
+        // localStorage.setItem("token", response.accessToken);
+        // localStorage.setItem("name", response.profileObj.name);
+        // localStorage.setItem("avatar", response.profileObj.imageUrl);
+        localStorage.setItem("token", 123);
+        localStorage.setItem("name", "Rafael Buzón Urbano");
+        localStorage.setItem("avatar", avatar);
+
         setIsAuth(true);
     };
 
@@ -78,7 +82,15 @@ function Login(props) {
                 </CardContent>
                 <CardActions classes={{root: classes.cardActions}}>
                     <div>
-                        <GoogleLogin
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            onClick={() => loginSucces()}
+                        >
+                            <img src={googleLogo} alt="google-logo" />
+                        </Button>
+                        {/* <GoogleLogin
                             clientId="784406214165-b9kjjdc4j062angd690qektitsoej31p.apps.googleusercontent.com"
                             render={renderProps => (
                                 <Button
@@ -92,7 +104,7 @@ function Login(props) {
                             )}
                             onSuccess={loginSucces}
                             onFailure={loginFailure}
-                        />
+                        /> */}
                         {/* <div>
                             <Button
                                 variant="contained"
