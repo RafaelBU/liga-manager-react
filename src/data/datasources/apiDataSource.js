@@ -43,9 +43,9 @@ export const deleteDataDispath = id => {
 export const createDataDispatch = player => {
     return new Promise((resolve, reject) => {
         axios
-            .post("users/", player)
+            .post("users/", { ...player, avatar: "" })
             .then(response => {
-                resolve(response.data)
+                resolve({ ...response.data, avatar: player.avatar })
             })
             .catch(error => {
                 reject(error);

@@ -1,43 +1,55 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../navbar/navbar";
-import {makeStyles} from "@material-ui/core/styles";
-// import List from "@material-ui/core/List";
-// import ListItem from "@material-ui/core/ListItem";
-// import Divider from "@material-ui/core/Divider";
-// import ListItemText from "@material-ui/core/ListItemText";
-// import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-// import ListItemIcon from "@material-ui/core/ListItemIcon";
-// import Avatar from "@material-ui/core/Avatar";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-//import EditIcon from "@material-ui/icons/Edit";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-// import DeleteIcon from "@material-ui/icons/Delete";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actions} from "../../my-redux/my-redux";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actions } from "../../my-redux/my-redux";
 import TablePlayers from "./tablePlayers";
 import ModalEdit from "../modals/modalEdit";
 import ModalHelp from "../modals/modalHelp";
 import ModalCreate from "../modals/modalCreate";
+import Fab from "@material-ui/core/Fab";
+import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ModalError from "../modals/modalError";
+import "./players.scss";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        //display: "flex",
-        //justifyContent: "center",
         width: "100%",
-        // maxWidth: 360,
         backgroundColor: theme.palette.background.paper
     },
     title: {
         margin: 20
     },
-    inline: {
-        display: "inline"
+    fab: {
+        position: "fixed",
+        right: 0,
+        bottom: 0,
+        width: 70,
+        height: 70,
+        margin: 20,
+        "&:focus": {
+            outline: 0
+        }
     },
-    itemText: {
-        width: "25%",
-        textAlign: "left"
+    icon: {
+        width: 70,
+        height: 70
+    },
+    iconSelected: {
+        "&:focus": {
+            outline: 0
+        }
+    },
+    loading: {
+        display: "flex",
+        justifyContent: "center",
+        height: "100vh",
+        marginTop: "10%"
     }
 }));
 
@@ -47,21 +59,20 @@ function Players(props) {
         loadDataUser,
         updateDataDispatch,
         deleteDataDispath,
-        createDataDispatch
+        createDataDispatch,
+        error
     } = props;
 
     const [page, setPage] = useState(1);
-    const [totalData, setTotalData] = useState(props.totalData);
+    const [totalData, setTotalData] = useState(12);
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalHelp, setShowModalHelp] = useState(false);
-
+    const [showModalError, setShowModalEror] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState({});
-
     const [isUpdate, setIsUpdate] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [isCreate, setIsCreate] = useState(false);
-    //const [refContainer, setRefContainer] = useState(null);
 
     // Load player data
     useEffect(() => {
@@ -76,7 +87,7 @@ function Players(props) {
             updateDataDispatch(selectedPlayer);
             setIsUpdate(false);
         }
-    });
+    }, [isUpdate, updateDataDispatch, selectedPlayer]);
 
     // Delete player
     useEffect(() => {
@@ -85,7 +96,7 @@ function Players(props) {
             setIsDelete(false);
             setTotalData(totalData - 1);
         }
-    });
+    }, [isDelete, deleteDataDispath, selectedPlayer, totalData]);
 
     // Create player
     useEffect(() => {
@@ -94,7 +105,14 @@ function Players(props) {
             setIsCreate(false);
             setTotalData(totalData + 1);
         }
-    });
+    }, [isCreate, createDataDispatch, selectedPlayer, totalData]);
+
+    // Check error
+    useEffect(() => {
+        if (error.code) {
+            setShowModalEror(true);
+        }
+    }, [error]);
 
     const onEditPlayer = player => {
         setSelectedPlayer(player);
@@ -102,7 +120,7 @@ function Players(props) {
     };
 
     const updatePlayer = position => {
-        setSelectedPlayer({...selectedPlayer, position});
+        setSelectedPlayer({ ...selectedPlayer, position });
         setIsUpdate(true);
         setShowModalEdit(false);
     };
@@ -124,13 +142,10 @@ function Players(props) {
 
     const classes = useStyles();
 
-    console.log("Info actualizada ", selectedPlayer);
-
-    console.log("DATA USER ES ", props.dataUser);
-
     return (
-        <div style={{backgroundColor: "#f5f5f5", height: "100vh"}}>
+        <div className="container-players">
             <Navbar />
+            {showModalError ? (<ModalError titleError="Error al comunicarse con la API" textError={error.message} onClose={() => setShowModalEror(false)} />) : ""}
             {showModalEdit ? (
                 <ModalEdit
                     data={selectedPlayer}
@@ -138,8 +153,8 @@ function Players(props) {
                     onUpdate={updatePlayer}
                 />
             ) : (
-                ""
-            )}
+                    ""
+                )}
             {showModalHelp ? (
                 <ModalHelp
                     titleHelp="Mercado de fichajes"
@@ -148,117 +163,46 @@ function Players(props) {
                     onClose={() => setShowModalHelp(false)}
                 />
             ) : (
-                ""
-            )}
+                    ""
+                )}
             {showModalCreate ? (
                 <ModalCreate
                     onClose={() => setShowModalCreate(false)}
                     onCreate={createPlayer}
                 />
             ) : (
-                ""
-            )}
-            <div className="container-fluid" style={{marginTop: 100}}>
+                    ""
+                )}
+            <div className="container content-players">
                 <Typography
                     variant="h4"
                     component="h4"
                     align="center"
-                    classes={{root: classes.title}}
+                    classes={{ root: classes.title }}
                 >
                     Jugadores
-                    <HelpOutlineIcon
-                        style={{cursor: "pointer"}}
-                        onClick={() => setShowModalHelp(true)}
-                    />
+
+                    <IconButton className={classes.iconSelected} onClick={() => setShowModalHelp(true)}>
+                        <HelpOutlineIcon />
+                    </IconButton>
+
                 </Typography>
                 {props.loadDataUser ? (
                     <TablePlayers
                         data={props.dataUser}
-                        totalData={totalData}
+                        totalData={page === 1 && props.dataUser.length === 6 ? totalData : props.dataUser.length}
                         getData={page => setPage(page)}
                         onEditPlayer={onEditPlayer}
                         deletePlayer={deletePlayer}
                     />
                 ) : (
-                    "load"
-                )}
-                {/* <List className={classes.root}>
-                    {props.loadDataUser
-                        ? props.dataUser.map((user, index) => {
-                            return (
-                                <div key={index}>
-                                    <ListItem >
-                                        <ListItemAvatar>
-                                            <Avatar
-                                                alt="player-avatar"
-                                                src={user.avatar}
-                                                onClick={() => onEditPlayer(user)}
-                                            />
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={
-                                                user.first_name
-                                            }
-                                            classes={{ root: classes.itemText }}
-                                        />
-                                        {/* <ListItemText
-                                              primary={user.email}
-                                              //primary="prueba@mail.com"
-                                              //classes={{root: classes.itemText}}
-                                          /> */}
-                {/* <ListItemText
-                                            primary={
-                                                user.position ? user.position : "Sin asignar"
-                                            }
-                                            classes={{ root: classes.itemText }}
-                                        /> */}
-                {/* <ListItemIcon
-                                              classes={{root: classes.itemText}}
-                                          >
-                                              <EditIcon />
-                                          </ListItemIcon> */}
-                {/* <ListItemIcon>
-                                            <DeleteIcon onClick={() => deletePlayer(user)} />
-                                        </ListItemIcon> */}
-                {/* <ListItemText
-                                              primary="Brunch this weekend?"
-                                              secondary={
-                                                  <React.Fragment>
-                                                      <Typography
-                                                          component="span"
-                                                          variant="body2"
-                                                          className={
-                                                              classes.inline
-                                                          }
-                                                          color="textPrimary"
-                                                      >
-                                                          Ali Connors
-                                                      </Typography>
-                                                      {
-                                                          " — I'll be in your neighborhood doing errands this…"
-                                                      }
-                                                  </React.Fragment>
-                                              }
-                                          /> */}
-                {/* </ListItem> */}
-                {/* <Divider variant="inset" component="li" />
-                                </div>
-                            );
-                        })
-                        : "Load..."}
-                </List> */}
-                <AddCircleIcon
-                    color="primary"
-                    style={{
-                        position: "fixed",
-                        right: 0,
-                        bottom: 0,
-                        width: 70,
-                        height: 70,
-                        margin: 20
-                    }}
-                    onClick={onCreatePlayer}
-                />
+                        <div className={classes.loading}>
+                            <CircularProgress />
+                        </div>
+                    )}
+                <Fab color="primary" className={classes.fab} onClick={onCreatePlayer} >
+                    <AddCircleIcon className={classes.icon} />
+                </Fab>
             </div>
         </div>
     );
@@ -274,7 +218,8 @@ export default connect(
         dataUser: appState.app.dataUser,
         lastData: appState.app.lastData,
         totalData: appState.app.totalData,
-        loadDataUser: appState.app.loadDataUser
+        loadDataUser: appState.app.loadDataUser,
+        error: appState.error
     }),
     dispatch =>
         bindActionCreators(

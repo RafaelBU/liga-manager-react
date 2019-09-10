@@ -1,6 +1,6 @@
 import React from "react";
 import "./404.scss";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function NotFound() {
     return (
@@ -18,7 +18,7 @@ function NotFound() {
 
                                 <p>Parece que esta página no existe</p>
 
-                                <NavLink to="/">
+                                <NavLink to="/home">
                                     <button className="link_404">
                                         Volver al inicio
                                     </button>

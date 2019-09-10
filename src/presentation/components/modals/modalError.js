@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function ModalHelp(props) {
+function ModalError(props) {
     return (
         <Dialog
             open={true}
@@ -22,22 +22,21 @@ function ModalHelp(props) {
             aria-describedby="alert-dialog-slide-description"
         >
             <DialogTitle id="alert-dialog-slide-title">
-                {props.titleHelp}
+                {props.titleError}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {props.textHelp1} <br />
-                    {props.textHelp2}
+                    {props.textError}
                 </DialogContentText>
             </DialogContent>
 
             <DialogActions>
                 <Button onClick={props.onClose} color="primary">
-                    Entendido
+                    Cerrar
             </Button>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default ModalHelp;
+export default ModalError;

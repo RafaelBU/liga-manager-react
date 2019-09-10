@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -11,12 +11,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "react-avatar";
+import "./modalCreate.scss";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
         flexWrap: "no-wrap"
@@ -47,26 +48,21 @@ function ModalCreate(props) {
     };
 
     const handleChangeAvatar = event => {
-        // const urlCreator = window.URL || window.webkitURL;
-        // const imageUrl = urlCreator.createObjectURL(new Blob([event.target.files[0]]));
         const reader = new FileReader();
-        reader.onloadend = function() {
+        reader.onloadend = function () {
             const myDataUrl = reader.result;
             setAvatar(myDataUrl);
-            // do something with the URL in the DOM,
-            // then save it to local storage
         };
 
         reader.readAsDataURL(event.target.files[0]);
-        // setAvatar(imageUrl);
     };
 
     useEffect(() => {
         setIsEnable(
             first_name !== "" &&
-                last_name !== "" &&
-                position !== "" &&
-                avatar !== ""
+            last_name !== "" &&
+            position !== "" &&
+            avatar !== ""
         );
     }, [first_name, last_name, position, avatar]);
 
@@ -89,7 +85,7 @@ function ModalCreate(props) {
                     <TextField
                         id="textfield-name"
                         label="Nombre"
-                        style={{width: "97%", margin: 8}}
+                        className="textField-style"
                         margin="normal"
                         InputLabelProps={{
                             shrink: true
@@ -99,14 +95,14 @@ function ModalCreate(props) {
                     <TextField
                         id="textfield-last-name"
                         label="Apellido"
-                        style={{width: "97%", margin: 8}}
+                        className="textField-style"
                         margin="normal"
                         InputLabelProps={{
                             shrink: true
                         }}
                         onChange={handleChangeLastName}
                     />
-                    <div style={{margin: 8}}>
+                    <div className="margin-style">
                         <InputLabel htmlFor="position-simple">
                             Posición
                         </InputLabel>
@@ -117,7 +113,7 @@ function ModalCreate(props) {
                                 name: "position",
                                 id: "position-simple"
                             }}
-                            style={{width: "100%"}}
+                            className="select-style"
                         >
                             <MenuItem value={"Delantero"}>Delantero</MenuItem>
                             <MenuItem value={"Defensa"}>Defensa</MenuItem>
@@ -128,7 +124,7 @@ function ModalCreate(props) {
                     <Avatar
                         src={avatar}
                         alt="selected-avatar"
-                        size={90}
+                        size={70}
                         round={true}
                     />
                     <input
@@ -138,7 +134,7 @@ function ModalCreate(props) {
                         type="file"
                         onChange={handleChangeAvatar}
                     />
-                    <label htmlFor="button-file" style={{margin: 8}}>
+                    <label htmlFor="button-file" className="margin-style">
                         <Button
                             variant="contained"
                             component="span"
@@ -168,10 +164,10 @@ function ModalCreate(props) {
                         Aceptar
                     </Button>
                 ) : (
-                    <Button color="primary" disabled>
-                        Aceptar
+                        <Button color="primary" disabled>
+                            Aceptar
                     </Button>
-                )}
+                    )}
             </DialogActions>
         </Dialog>
     );

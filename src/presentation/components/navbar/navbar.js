@@ -1,9 +1,9 @@
 import React from "react";
 import Avatar from "react-avatar";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import clsx from "clsx";
-import {makeStyles, useTheme} from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -21,7 +21,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import {GoogleLogout} from "react-google-login";
+import { GoogleLogout } from "react-google-login";
+import "./navbar.scss";
 
 const drawerWidth = 240;
 
@@ -55,7 +56,6 @@ const useStyles = makeStyles(theme => ({
     },
     drawerPaper: {
         width: drawerWidth
-        //backgroundColor: "#3f51b5"
     },
     drawerHeader: {
         display: "flex",
@@ -127,21 +127,18 @@ function Navbar() {
                     <Typography variant="h6" noWrap>
                         <NavLink
                             to="/home"
-                            style={{color: "white", textDecoration: "none"}}
+                            style={{
+                                color: "white",
+                                textDecoration: "none"
+                            }}
                         >
-                            {" "}
-                            Liga Manager{" "}
+                            Liga Manager
                         </NavLink>
                     </Typography>
-                    <div style={{marginLeft: "auto"}}>
+                    <div className="navbar-avatar-container">
                         <Avatar src={avatar} size={50} round={true} />
                         <span
-                            className="d-none d-md-inline"
-                            style={{
-                                marginLeft: 10,
-                                color: "white",
-                                alignSelf: "center"
-                            }}
+                            className="d-none d-md-inline name-style"
                         >
                             {name}
                         </span>
@@ -162,15 +159,15 @@ function Navbar() {
                         {theme.direction === "ltr" ? (
                             <ChevronLeftIcon />
                         ) : (
-                            <ChevronRightIcon />
-                        )}
+                                <ChevronRightIcon />
+                            )}
                     </IconButton>
                 </div>
                 <Divider />
                 <List>
                     <NavLink
                         to="/home"
-                        style={{color: "#3f51b5", textDecoration: "none"}}
+                        style={{ color: "#3f51b5", textDecoration: "none" }}
                     >
                         <ListItem button>
                             <ListItemIcon>
@@ -181,7 +178,7 @@ function Navbar() {
                     </NavLink>
                     <NavLink
                         to="/players"
-                        style={{color: "#3f51b5", textDecoration: "none"}}
+                        style={{ color: "#3f51b5", textDecoration: "none" }}
                     >
                         <ListItem button>
                             <ListItemIcon>
@@ -192,7 +189,7 @@ function Navbar() {
                     </NavLink>
                     <NavLink
                         to="/myTeam"
-                        style={{color: "#3f51b5", textDecoration: "none"}}
+                        style={{ color: "#3f51b5", textDecoration: "none" }}
                     >
                         <ListItem button>
                             <ListItemIcon>
@@ -203,7 +200,7 @@ function Navbar() {
                     </NavLink>
                     <NavLink
                         to="/"
-                        style={{color: "#3f51b5", textDecoration: "none"}}
+                        style={{ color: "#3f51b5", textDecoration: "none" }}
                     >
                         <GoogleLogout
                             clientId="784406214165-b9kjjdc4j062angd690qektitsoej31p.apps.googleusercontent.com"

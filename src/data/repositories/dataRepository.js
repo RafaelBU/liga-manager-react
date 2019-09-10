@@ -38,22 +38,28 @@ const parseError = error => {
         case 401:
             return {
                 code: errors.PERMISSION_DENIED_ERROR,
-                message: error.message
+                message: "Permiso denegado"
             };
         case 500:
             return {
-                code: errors.INVALID_DOCUMENT,
-                message: error.message
+                code: errors.SERVER_ERROR,
+                message: "Error interno en el servidor"
             };
+        case 404:
+            return {
+                code: errors.NOT_FOUND,
+                message: "Método no encontrado"
+            }
         default:
             return {
                 code: errors.UNKNOWN_ERROR,
-                message: error.message
+                message: "Error desconocido"
             };
     }
 };
 
 const errors = {
+    NOT_FOUND: "NOT_FOUND",
     SERVER_ERROR: "SERVER_ERROR",
     PERMISSION_DENIED_ERROR: "PERMISSION_DENIED_ERROR",
     UNKNOWN_ERROR: "UNKNOWN_AUTH_ERROR"

@@ -1,12 +1,11 @@
 import React from "react";
-//import logo from "./logo.svg";
 import "./App.css";
 import Login from "./components/login/login";
 import Home from "./components/home/home";
 import Players from "./components/players/players";
 import MyTeam from "./components/myTeam/myTeam";
 import NotFound from "./components/404/404";
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 function App() {

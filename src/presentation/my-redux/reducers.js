@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 import * as actions from "./actions.js";
 
 const APP_DEFAULT = {
@@ -18,7 +18,7 @@ const APP_DEFAULT = {
         null
     ],
     loadDataUser: JSON.parse(localStorage.getItem("loadDataUser")) || false,
-    totalData: localStorage.getItem("totalData") || 12
+    totalData: localStorage.getItem("totalData") ? parseInt(localStorage.getItem("totalData")) : 12
 };
 
 const app = (state = APP_DEFAULT, action) => {
@@ -53,6 +53,18 @@ const app = (state = APP_DEFAULT, action) => {
             return {
                 ...state,
                 team: setTeam(state.team, action.index, action.avatar)
+            };
+        default:
+            return state;
+    }
+};
+
+const error = (state = {}, action) => {
+    switch (action.type) {
+        case actions.ERROR:
+            return {
+                ...state,
+                ...action.error
             };
         default:
             return state;
@@ -97,7 +109,7 @@ const addUser = (players, newPlayer, totalData) => {
     const idPlayer = players[players.length - 1].id + 7;
     const emailPlayer =
         newPlayer.first_name + "." + newPlayer.last_name + "@reqres.in";
-    auxPlayers.push({...newPlayer, id: idPlayer, email: emailPlayer});
+    auxPlayers.push({ ...newPlayer, id: idPlayer, email: emailPlayer });
     localStorage.setItem("dataUser", JSON.stringify(auxPlayers));
     localStorage.setItem("totalData", totalData + 1);
     return auxPlayers;
@@ -110,4 +122,4 @@ const setTeam = (team, index, avatar) => {
     return auxTeam;
 };
 
-export const combinedReducers = combineReducers({app});
+export const combinedReducers = combineReducers({ app, error });

@@ -1,9 +1,12 @@
 .container-login {
     height: 100vh;
-    background: url("https://images.alphacoders.com/510/thumb-1920-510026.jpg")
+    background: url("../../assets//login-background.jpg")
         no-repeat;
     background-size: 100% 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    .login-title {
+        margin-left: 10px;
+    }
 }

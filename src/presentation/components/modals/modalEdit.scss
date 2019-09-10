@@ -1,0 +1,15 @@
+.container-player {
+    display: flex;
+    justify-content: flex-start;
+    .name-player{
+        align-self: center;
+        margin-left: 10px;
+    }
+}
+
+.container-position {
+    margin-top: 20px;
+    .select-position {
+        width: 100%;
+    }
+}
